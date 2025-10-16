@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLOG PROJECT</title>
-</head>
-<body>
-    <h1>Hello World from Django</h1>
-    <p>Welcome to my home page!</p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home Page{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+
+{% block content %}
+    
+        <h1>Hello World using Django and Jinga!</h1>
+        
+{% endblock content %}
+

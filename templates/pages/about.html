@@ -1,12 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Page</title>
-</head>
-<body>
-    <h1>About me</h1>
-    <p>This is a a brief description about me</p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Page{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock css %}
+
+{% block content %}
+    
+        <h1>About Me</h1>
+        <p>Hey there! I'm Reggie—38 years young, a devoted family man, and an enthusiastic connoisseur of quality time with my loved ones. Whether it's spontaneous weekend adventures, cozy movie nights, or heartfelt conversations around the dinner table, nothing brings me more joy than creating cherished memories with my family. Life’s a beautiful journey, and I’m all about savoring every moment with the people who matter most!</p>
+        
+{% endblock content %}
