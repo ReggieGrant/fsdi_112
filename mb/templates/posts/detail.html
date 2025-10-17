@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content%}
+
+    <h1>{{ detailed.title }}</h1>
+    <p>Published on: {{ detailed.created_on }}</p>
+    <div>
+        {{ detailed.body|linebreaks }}
+    </div>
+{% endblock content %}
