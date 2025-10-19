@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
-{% block content%}
 
-    <h1>{{ detailed.title }}</h1>
-    <p>Published on: {{ detailed.created_on }}</p>
+{% block title %}
+    Post Detail
+{% endblock title %}
+
+{% block content%}
     <div>
-        {{ detailed.body|linebreaks }}
+        <h1>{{ detailed.title }}</h1>
+        <h4>{{ detailed.subtitle }}</h4>
+        <p>{{ detailed.body }}</p>
+        <span>{{ detailed.created_on }}</span>
+        <span>{{ detailed.author }}</span>
+        <br>
+        <a href="{% url 'post_edit' detailed.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'post_delete' detailed.id %}" class="btn btn-danger">Delete</a>
     </div>
 {% endblock content %}
