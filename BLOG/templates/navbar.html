@@ -15,9 +15,31 @@
         <li class="nav-item">
           <a class="nav-link" href="#"></a>
         </li>
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <form action="" method="post" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="nav-link btn btn-link" style="padding:0; border:none; background:none;">Log out</button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+          </li>
+
+        {% endif %}
       </ul>
+      {% if user.is_authenticated %}
+      <div class="d-flex"></div>
+        <span class="badge bg-secondary me-3">
+          Welcome, {{ user.username }}!
+        </span>
+      {% endif %}
       <span class="navbar-text">
-        Navbar text with an inline element
+        Blogging Platform
       </span>
     </div>
   </div>
