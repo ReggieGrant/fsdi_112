@@ -13,9 +13,12 @@
           <a class="nav-link" href="{% url 'about'%}">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"></a>
+          <a class="nav-link" href="{% url 'post_list' %}">Posts</a>
         </li>
         {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'post_create' %}">New Post</a>
+        </li>
           <li class="nav-item">
             <form action="{% url 'logout' %}" method="post" style="display:inline;">
               {% csrf_token %}

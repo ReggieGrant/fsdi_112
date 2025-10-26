@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title%}
-post list
+Posts
 {% endblock title %}
 
 {% block content %}
@@ -9,7 +9,17 @@ post list
 <ul>
     {% for post in posts %}
     <li>
-        <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a> - {{ post.status.name }}
+        <div>
+            <h5>Title: {{ post.title }}</h5>
+            <p>Body: {{ post.body|truncatechars:10 }}</p>
+            <span><strong>Author: {{ post.author }}</strong></span>
+            <br>
+            <span><strong>Status: {{ post.status }}</strong></span>
+            <br>
+            <span><strong>Date: {{ post.created_on }}</strong></span>
+            <a href="{% url 'post_detail' post.id %}">Continue reading...</a>
+        </div>
+        
     </li>
     {% endfor %}
 </ul>

@@ -1,11 +1,24 @@
 {% extends 'base.html' %}
 {% block title %}
-post detail
+Post details
 {% endblock title %}    
 
 {% block content %}
-<h1>{{ post.title }}</h1>
-<p>{{ post.content }}</p>
-<p>Status: {{ post.status.name }}</p>
-<a href="{% url 'post_list' %}">Back to Posts</a>
+<div>
+    <h1>{{ detailed.title }}</h1>
+    <h4>{{ detailed.subtitle }}</h4>
+    <p>{{ detailed.body }}</p>
+    <span>{{ detailed.created_on }}</span>
+    <br>
+    <span>{{ detailed.author }}</span>
+    <br>
+    <span>{{ detailed.status.name }}</span>
+    <br>
+    <span>{{ detailed.status.description }}</span>
+    <br>
+    {% if user.is_authenticated and user == detailed.author %}
+    <a href="{% url 'post_update' detailed.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'post_delete' detailed.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
+</div>
 {% endblock content %}
