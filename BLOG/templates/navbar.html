@@ -19,18 +19,24 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'post_create' %}">New Post</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'post_archived' %}">Archived Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'post_drafts' %}">Drafts</a>
+        </li>
           <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            <form action="{% url 'account_logout' %}" method="post" style="display:inline;">
               {% csrf_token %}
               <button type="submit" class="nav-link btn btn-link" style="padding:0; border:none; background:none;">Log out</button>
             </form>
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-link" href="{% url 'account_login' %}">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+            <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
           </li>
 
         {% endif %}

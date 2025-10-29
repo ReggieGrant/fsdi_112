@@ -66,4 +66,30 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object() # Get the post being deleted
         if self.request.user.is_authenticated: # Check if user is authenticated
             return self.request.user == post.author # Allow delete only if the user is the author
+        
+
+
+class DraftPostListView(LoginRequiredMixin, ListView):
+    model = Post
+    template_name = 'posts/drafts.html'
+    context_object_name = 'draft_posts'
+    
+      
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        draft_status = Status.objects.get(name='draft') # Get the 'draft' status object
+        context['draft_posts'] = Post.objects.filter(status=draft_status).filter(author=self.request.user).order_by("created_on").reverse()
+        return context
+    
+
+class ArchivedPostListView(LoginRequiredMixin, ListView):
+    # model = Post
+    template_name = 'posts/archived.html'
+    archived_status_status = Status.objects.get(name='archived') # Get the 'draft' status object
+    context_object_name = 'archived_posts'
+    archived_status = Status.objects.get(name='archived') # Get the 'archived' status object
+    queryset = Post.objects.all().filter(status=archived_status_status).order_by("created_on").reverse()   # Filter posts with 'archived' status and order by creation date descending
+    def test_func(self):
+        if self.request.user.is_authenticated: # Check if user is authenticated
+            return self.request.user.is_staff # Allow access only if the user is staff/admin
     

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Verify Email Address
+{% endblock title %}
+
+{% block content %}
+<h1>Verify Your Email Address</h1>
+<p>We've sent a verification email to {{ email }}. Please check your inbox and click the link to verify your email address.</p>
+<p>If you did not receive the email, please check your spam folder or <a href="{% url 'account_email_verification_sent' %}">    resend the verification email</a>.</p>
+{% endblock content %}

@@ -1,0 +1,70 @@
+/* base.css */
+
+/* Root variables for consistent theming */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --container-padding: 60px;
+    --navbar-height: 56px;
+}
+
+/* Base body styles */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content wrapper - replaces inline style */
+.main-content {
+    margin: var(--container-padding);
+    flex: 1;
+}
+
+/* Responsive margins */
+@media (max-width: 768px) {
+    :root {
+        --container-padding: 30px;
+    }
+    
+    .main-content {
+        margin: 30px 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        margin: 20px 10px;
+    }
+}
+
+/* Utility classes */
+.full-height {
+    min-height: calc(100vh - var(--navbar-height));
+}
+
+.section-spacing {
+    padding: 40px 0;
+}
+
+/* Custom Bootstrap overrides (if needed) */
+.btn {
+    border-radius: 6px;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.nav-link {
+    font-weight: 500;
+}

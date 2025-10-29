@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Confim Email Address
+{% endblock title %}
+
+{% block content %}
+<h1>Confirm Your Email Address</h1>
+<p>We've sent a confirmation email to {{ email }}. Please check your inbox and click the link to confirm your email address.</p>
+<p>If you did not receive the email, please check your spam folder or <a href="{% url 'account_email_verification_sent' %}">resend the confirmation email</a>.</p>
+{% if confirmation %}
+    {% if can confirm %}
+        <p>Please confirm that <a href="mailto:{{ confirmation.email_address.email }}"></a></p>
+    {% endif %}
+{% endblock content %}

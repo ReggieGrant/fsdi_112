@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Archived Posts
+{% endblock title %}
+
+{% block content %}
+<h1>Archived Posts</h1>
+<ul>
+    {% for post in archived_posts %}
+    <li>
+        <div>
+            <h5>Title: {{ post.title }}</h5>
+            <p>Body: {{ post.body|truncatechars:10 }}</p>
+            <span><strong>Author: {{ post.author }}</strong></span>
+            <br>
+            <span><strong>Status: {{ post.status }}</strong></span>
+            <br>
+            <span><strong>Date: {{ post.created_on }}</strong></span>
+            <a href="{% url 'post_detail' post.id %}">Continue reading...</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}
