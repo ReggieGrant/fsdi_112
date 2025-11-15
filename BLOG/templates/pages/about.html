@@ -1,15 +1,128 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About Page{% endblock title %}
+{% block title %}About - Reggie{% endblock title %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'css/about.css' %}">
 {% endblock css %}
 
 {% block content %}
-    
-        <h1>About Me</h1>
-        <p>Hey there! I'm Reggie—38 years young, a devoted family man, and an enthusiastic connoisseur of quality time with my loved ones. Whether it's spontaneous weekend adventures, cozy movie nights, or heartfelt conversations around the dinner table, nothing brings me more joy than creating cherished memories with my family. Life’s a beautiful journey, and I’m all about savoring every moment with the people who matter most!</p>
-        
+    <!-- Hero Section -->
+    <div class="about-hero">
+        <div class="container">
+            <h1>About Me</h1>
+            <p class="lead">Family man, memory maker, and life enthusiast</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="about-content">
+        <div class="container">
+            
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        👨‍👩‍👧‍👦
+                    </div>
+                    <div class="profile-info">
+                        <h3>Reggie</h3>
+                        <p class="subtitle">38 Years Young | Family Man | Memory Maker</p>
+                    </div>
+                </div>
+                <div class="profile-body">
+                    <p>Hey there! I'm Reggie—38 years young, a devoted family man, and an enthusiastic connoisseur of quality time with my loved ones. Whether it's spontaneous weekend adventures, cozy movie nights, or heartfelt conversations around the dinner table, nothing brings me more joy than creating cherished memories with my family. Life's a beautiful journey, and I'm all about savoring every moment with the people who matter most!</p>
+                </div>
+            </div>
+
+            <!-- My Story Section -->
+            <div class="about-section">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2>My Story</h2>
+                        <p>Life has taught me that the most precious moments aren't found in grand gestures or expensive experiences—they're in the simple, everyday magic we create with the people we love. From sunrise coffee chats to bedtime stories, every moment is an opportunity to strengthen the bonds that matter most.</p>
+                        <p>As a husband and father, I've discovered that true success isn't measured by career achievements or material possessions, but by the laughter echoing through our home, the warmth of family gatherings, and the unconditional love we share. These are the investments that truly pay dividends.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values/What I Love Section -->
+            <div class="about-section">
+                <h2 class="text-center mb-5">What I Value Most</h2>
+                <div class="values-grid">
+                    <div class="value-item">
+                        <span class="value-icon">❤️</span>
+                        <h3>Family First</h3>
+                        <p>Nothing in this world comes before my family. They are my priority, my motivation, and my greatest blessing.</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <span class="value-icon">🎯</span>
+                        <h3>Quality Time</h3>
+                        <p>Whether it's weekend adventures or quiet evenings at home, I believe in being fully present with those I love.</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <span class="value-icon">🌟</span>
+                        <h3>Creating Memories</h3>
+                        <p>Life is a collection of moments. I'm passionate about making each one count and building lasting memories.</p>
+                    </div>
+                    
+                    <div class="value-item">
+                        <span class="value-icon">💬</span>
+                        <h3>Open Communication</h3>
+                        <p>Heartfelt conversations around the dinner table are where real connections are made and relationships grow stronger.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fun Stats -->
+            <div class="about-stats">
+                <div class="stat-row">
+                    <div class="stat-box">
+                        <span class="number">365</span>
+                        <span class="label">Days of Family Time</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="number">∞</span>
+                        <span class="label">Cherished Memories</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="number">100%</span>
+                        <span class="label">Devoted to Loved Ones</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quote Section -->
+            <div class="quote-section">
+                <blockquote>
+                    "The most important thing in life is to learn how to give out love, and to let it come in."
+                </blockquote>
+                <cite>— Mitch Albom</cite>
+            </div>
+
+            <!-- Hobbies/Interests Section -->
+            <div class="about-section">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <h2>How We Spend Our Time</h2>
+                        <p><strong>Spontaneous Adventures:</strong> There's nothing quite like hitting the road with no fixed destination, discovering hidden gems, and creating unexpected memories along the way.</p>
+                        <p><strong>Cozy Movie Nights:</strong> Our living room transforms into the best theater in town, complete with popcorn, blankets, and family cuddles.</p>
+                        <p><strong>Dinner Table Conversations:</strong> We turn off the devices and turn on the conversation—sharing stories, dreams, and plenty of laughter over home-cooked meals.</p>
+                        <p><strong>Weekend Projects:</strong> Whether we're building something together, cooking a new recipe, or tackling a DIY project, the journey is always more fun than the destination.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="contact-cta">
+                <h2>Let's Connect</h2>
+                <p>I love connecting with other family-oriented folks who share a passion for making the most of life's precious moments.</p>
+                <a href="{% url 'post_list' %}" class="btn btn-primary btn-lg">Read My Posts</a>
+            </div>
+
+        </div>
+    </div>
 {% endblock content %}

@@ -1,16 +1,295 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
 
-{% block title %}
-Sign Up
-{% endblock title %}
+{% block title %}Sign Up - Django Blogging Platform{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>Sign Up</h1>
-<p>If you already have an account, please <a href="{% url 'account_login' %}">log in here</a>.</p>
-<form method="post" action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Sign Up</button>
-</form>
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Auth Header -->
+            <div class="auth-header">
+                <span class="auth-icon">✨</span>
+                <h1>Create Your Account</h1>
+                <p>Join our community and start sharing your stories today</p>
+            </div>
+            
+            <!-- Auth Body -->
+            <div class="auth-body">
+                <!-- Display Messages (if any) -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- Signup Form -->
+                <form method="post" action="{% url 'account_signup' %}" class="auth-form" id="signupForm">
+                    {% csrf_token %}
+                    
+                    <!-- Username Field -->
+                    {% if form.username %}
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">
+                            {{ form.username.label }}
+                        </label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if form.username.help_text %}
+                            <span class="helptext">{{ form.username.help_text }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Email Field -->
+                    {% if form.email %}
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">
+                            {{ form.email.label }}
+                        </label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if form.email.help_text %}
+                            <span class="helptext">{{ form.email.help_text }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Password1 Field -->
+                    {% if form.password1 %}
+                    <div class="form-group">
+                        <label for="{{ form.password1.id_for_label }}">
+                            {{ form.password1.label }}
+                        </label>
+                        <div class="password-field">
+                            {{ form.password1 }}
+                        </div>
+                        {% if form.password1.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password1.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        
+                        <!-- Password Strength Indicator -->
+                        <div class="password-strength" id="passwordStrength" style="display: none;">
+                            <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                        </div>
+                        <div class="password-strength-text" id="passwordStrengthText"></div>
+                        
+                        <!-- Password Requirements -->
+                        <div class="password-requirements">
+                            <h4>Password must contain:</h4>
+                            <ul id="passwordReqs">
+                                <li id="req-length">At least 8 characters</li>
+                                <li id="req-letter">At least one letter</li>
+                                <li id="req-number">At least one number</li>
+                            </ul>
+                        </div>
+                        
+                        {% if form.password1.help_text and not form.password1.errors %}
+                            <span class="helptext">{{ form.password1.help_text }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Password2 Field (Confirmation) -->
+                    {% if form.password2 %}
+                    <div class="form-group">
+                        <label for="{{ form.password2.id_for_label }}">
+                            {{ form.password2.label }}
+                        </label>
+                        <div class="password-field">
+                            {{ form.password2 }}
+                        </div>
+                        {% if form.password2.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password2.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if form.password2.help_text %}
+                            <span class="helptext">{{ form.password2.help_text }}</span>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Terms and Conditions (Optional) -->
+                    <div class="form-check">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <!-- Non-field Errors -->
+                    {% if form.non_field_errors %}
+                        <ul class="errorlist">
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        Create Account
+                    </button>
+                </form>
+                
+                <!-- Social Signup (Optional - Uncomment if using social auth) -->
+                {% comment %}
+                <div class="social-login">
+                    <div class="social-divider">
+                        <span>Or sign up with</span>
+                    </div>
+                    <div class="social-buttons">
+                        <a href="#" class="btn-social">
+                            <span>🔵</span>
+                            <span>Continue with Google</span>
+                        </a>
+                        <a href="#" class="btn-social">
+                            <span>📘</span>
+                            <span>Continue with Facebook</span>
+                        </a>
+                    </div>
+                </div>
+                {% endcomment %}
+            </div>
+            
+            <!-- Auth Footer -->
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'account_login' %}">Log in here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const passwordFields = document.querySelectorAll('input[type="password"]');
+        passwordFields.forEach(field => {
+            if (field.parentElement.classList.contains('password-field')) {
+                const toggleBtn = document.createElement('button');
+                toggleBtn.type = 'button';
+                toggleBtn.className = 'password-toggle';
+                toggleBtn.innerHTML = '👁️';
+                toggleBtn.setAttribute('aria-label', 'Toggle password visibility');
+                
+                field.parentElement.appendChild(toggleBtn);
+                
+                toggleBtn.addEventListener('click', function() {
+                    if (field.type === 'password') {
+                        field.type = 'text';
+                        toggleBtn.innerHTML = '🙈';
+                    } else {
+                        field.type = 'password';
+                        toggleBtn.innerHTML = '👁️';
+                    }
+                });
+            }
+        });
+        
+        // Password strength checker
+        const password1 = document.getElementById('{{ form.password1.id_for_label }}');
+        if (password1) {
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            const strengthContainer = document.getElementById('passwordStrength');
+            const reqLength = document.getElementById('req-length');
+            const reqLetter = document.getElementById('req-letter');
+            const reqNumber = document.getElementById('req-number');
+            
+            password1.addEventListener('input', function() {
+                const value = this.value;
+                let strength = 0;
+                
+                if (value.length === 0) {
+                    strengthContainer.style.display = 'none';
+                    strengthText.textContent = '';
+                    return;
+                }
+                
+                strengthContainer.style.display = 'block';
+                
+                // Check requirements
+                const hasLength = value.length >= 8;
+                const hasLetter = /[a-zA-Z]/.test(value);
+                const hasNumber = /[0-9]/.test(value);
+                
+                // Update requirement indicators
+                reqLength.classList.toggle('valid', hasLength);
+                reqLetter.classList.toggle('valid', hasLetter);
+                reqNumber.classList.toggle('valid', hasNumber);
+                
+                // Calculate strength
+                if (hasLength) strength++;
+                if (hasLetter) strength++;
+                if (hasNumber) strength++;
+                if (value.length >= 12) strength++;
+                if (/[!@#$%^&*]/.test(value)) strength++;
+                
+                // Update UI based on strength
+                strengthBar.className = 'password-strength-bar';
+                strengthText.className = 'password-strength-text';
+                
+                if (strength <= 2) {
+                    strengthBar.classList.add('weak');
+                    strengthText.classList.add('weak');
+                    strengthText.textContent = 'Weak password';
+                } else if (strength <= 3) {
+                    strengthBar.classList.add('medium');
+                    strengthText.classList.add('medium');
+                    strengthText.textContent = 'Medium password';
+                } else {
+                    strengthBar.classList.add('strong');
+                    strengthText.classList.add('strong');
+                    strengthText.textContent = 'Strong password';
+                }
+            });
+        }
+        
+        // Form submission loading state
+        const form = document.getElementById('signupForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        if (form && submitBtn) {
+            form.addEventListener('submit', function(e) {
+                // Check if terms checkbox is checked
+                const termsCheckbox = document.getElementById('terms');
+                if (termsCheckbox && !termsCheckbox.checked) {
+                    e.preventDefault();
+                    alert('Please agree to the Terms of Service and Privacy Policy');
+                    return;
+                }
+                
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+            });
+        }
+    });
+</script>
+{% endblock js %}

@@ -1,26 +1,185 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title%}
-Posts
-{% endblock title %}
+{% block title %}Posts - Django Blogging Platform{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/list.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>Posts</h1>
-<ul>
-    {% for post in posts %}
-    <li>
-        <div>
-            <h5>Title: {{ post.title }}</h5>
-            <p>Body: {{ post.body|truncatechars:10 }}</p>
-            <span><strong>Author: {{ post.author }}</strong></span>
-            <br>
-            <span><strong>Status: {{ post.status }}</strong></span>
-            <br>
-            <span><strong>Date: {{ post.created_on }}</strong></span>
-            <a href="{% url 'post_detail' post.id %}">Continue reading...</a>
+    <!-- Page Header -->
+    <div class="list-header">
+        <div class="container">
+            <h1>All Posts</h1>
+            <p>Browse through our collection of stories and articles</p>
         </div>
+    </div>
+
+    <div class="container">
+        <!-- Posts Toolbar (Optional - shows count and sorting) -->
+        {% if posts %}
+        <div class="posts-toolbar">
+            <div class="posts-count">
+                Showing <span>{{ posts|length }}</span> post{{ posts|length|pluralize }}
+            </div>
+            
+            <!-- Optional: Add sorting dropdown -->
+            <div class="sort-dropdown">
+                <label for="sortBy">Sort by:</label>
+                <select id="sortBy" onchange="window.location.href='?sort=' + this.value">
+                    <option value="-created_on">Newest First</option>
+                    <option value="created_on">Oldest First</option>
+                    <option value="title">Title (A-Z)</option>
+                    <option value="-title">Title (Z-A)</option>
+                </select>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Posts List -->
+        {% if posts %}
+        <ul class="posts-list">
+            {% for post in posts %}
+            <li class="post-item">
+                <!-- Post Header -->
+                <div class="post-item-header">
+                    <div style="flex: 1;">
+                        <h2 class="post-item-title">
+                            <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                        </h2>
+                    </div>
+                    <span class="status-badge status-{{ post.status|lower }}">
+                        {{ post.status }}
+                    </span>
+                </div>
+                
+                <!-- Post Body/Excerpt -->
+                <div class="post-item-body">
+                    {{ post.body|truncatewords:30|striptags }}
+                </div>
+                
+                <!-- Post Meta Information -->
+                <div class="post-item-meta">
+                    <!-- Author -->
+                    <div class="post-author">
+                        <div class="author-avatar">
+                            {{ post.author.username|first|upper }}
+                        </div>
+                        <span class="author-name">{{ post.author.username }}</span>
+                    </div>
+                    
+                    <!-- Date -->
+                    <div class="post-meta-item">
+                        <span class="post-meta-icon">📅</span>
+                        <span>{{ post.created_on|date:"M d, Y" }}</span>
+                    </div>
+                    
+                    <!-- Time Since Posted -->
+                    <div class="post-meta-item">
+                        <span class="post-meta-icon">⏱️</span>
+                        <span>{{ post.created_on|timesince }} ago</span>
+                    </div>
+                    
+                    <!-- Reading Time (if you have this field) -->
+                    {% if post.reading_time %}
+                    <div class="post-meta-item">
+                        <span class="post-meta-icon">📖</span>
+                        <span>{{ post.reading_time }} min read</span>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Post Footer -->
+                <div class="post-item-footer">
+                    <a href="{% url 'post_detail' post.id %}" class="read-more-link">
+                        Continue Reading
+                    </a>
+                    
+                    <!-- Optional: Edit/Delete buttons for post author -->
+                    {% if user == post.author %}
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'post_edit' post.id %}" class="btn btn-outline-secondary btn-sm">
+                            Edit
+                        </a>
+                        <a href="{% url 'post_delete' post.id %}" class="btn btn-outline-danger btn-sm">
+                            Delete
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
         
-    </li>
-    {% endfor %}
-</ul>
+        <!-- Pagination (if needed) -->
+        {% if is_paginated %}
+        <div class="pagination-wrapper">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li>
+                    <a href="?page=1">&laquo; First</a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <li class="active">
+                    <span>{{ num }}</span>
+                </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li>
+                    <a href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                <li>
+                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                <li>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3>No Posts Yet</h3>
+            <p>There are no posts to display at the moment. Be the first to share your story!</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'post_create' %}" class="btn btn-primary btn-lg">
+                Create Your First Post
+            </a>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg">
+                Sign Up to Post
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
 {% endblock content %}
+
+{% block js %}
+<script>
+    // Preserve sort parameter when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sortValue = urlParams.get('sort');
+        const sortSelect = document.getElementById('sortBy');
+        
+        if (sortValue && sortSelect) {
+            sortSelect.value = sortValue;
+        }
+    });
+</script>
+{% endblock js %}

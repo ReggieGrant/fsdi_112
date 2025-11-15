@@ -1,16 +1,167 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+    
+{% block title %}Login - Django Blogging Platform{% endblock title %}
 
-{% block title %}
-Login
-{% endblock title %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock css %}
 
 {% block content %}
-<h1>Sign In</h1>
-<p>If you have not created an account yet, then please <a href="{% url 'account_login' %}"></a></p>
-<form method="post" action="{% url 'account_login' %}">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<div class="auth-container">
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Auth Header -->
+            <div class="auth-header">
+                <span class="auth-icon">🔐</span>
+                <h1>Welcome Back!</h1>
+                <p>Login to continue sharing your stories</p>
+            </div>
+            
+            <!-- Auth Body -->
+            <div class="auth-body">
+                <!-- Display Messages (if any) -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- Login Form -->
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+                    
+                    <!-- Email/Username Field -->
+                    <div class="form-group">
+                        <label for="{{ form.login.id_for_label }}">
+                            {{ form.login.label }}
+                        </label>
+                        {{ form.login }}
+                        {% if form.login.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.login.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if form.login.help_text %}
+                            <span class="helptext">{{ form.login.help_text }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}">
+                            {{ form.password.label }}
+                        </label>
+                        <div class="password-field">
+                            {{ form.password }}
+                        </div>
+                        {% if form.password.errors %}
+                            <ul class="errorlist">
+                                {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Remember Me -->
+                    {% if form.remember %}
+                    <div class="form-check">
+                        {{ form.remember }}
+                        <label for="{{ form.remember.id_for_label }}">
+                            {{ form.remember.label }}
+                        </label>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Non-field Errors -->
+                    {% if form.non_field_errors %}
+                        <ul class="errorlist">
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-submit">
+                        Log In
+                    </button>
+                    
+                    <!-- Additional Links -->
+                    <div class="auth-links">
+                        <a href="{% url 'account_reset_password' %}">Forgot Password?</a>
+                    </div>
+                </form>
+                
+                <!-- Social Login (Optional - Uncomment if using social auth) -->
+                {% comment %}
+                <div class="social-login">
+                    <div class="social-divider">
+                        <span>Or continue with</span>
+                    </div>
+                    <div class="social-buttons">
+                        <a href="#" class="btn-social">
+                            <span>🔵</span>
+                            <span>Continue with Google</span>
+                        </a>
+                        <a href="#" class="btn-social">
+                            <span>📘</span>
+                            <span>Continue with Facebook</span>
+                        </a>
+                    </div>
+                </div>
+                {% endcomment %}
+            </div>
+            
+            <!-- Auth Footer -->
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{% url 'account_signup' %}">Sign up here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+{% block js %}
+<script>
+    // Optional: Add password visibility toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordField = document.querySelector('input[type="password"]');
+        if (passwordField && passwordField.parentElement.classList.contains('password-field')) {
+            const toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'password-toggle';
+            toggleBtn.innerHTML = '👁️';
+            toggleBtn.setAttribute('aria-label', 'Toggle password visibility');
+            
+            passwordField.parentElement.appendChild(toggleBtn);
+            
+            toggleBtn.addEventListener('click', function() {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    toggleBtn.innerHTML = '🙈';
+                } else {
+                    passwordField.type = 'password';
+                    toggleBtn.innerHTML = '👁️';
+                }
+            });
+        }
+        
+        // Add loading state to submit button
+        const form = document.querySelector('.auth-form');
+        const submitBtn = document.querySelector('.btn-submit');
+        
+        if (form && submitBtn) {
+            form.addEventListener('submit', function() {
+                submitBtn.classList.add('loading');
+                submitBtn.disabled = true;
+            });
+        }
+    });
+</script>
+{% endblock js %}
